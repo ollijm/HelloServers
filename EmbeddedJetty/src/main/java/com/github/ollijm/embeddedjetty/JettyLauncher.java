@@ -16,6 +16,7 @@ public class JettyLauncher {
 
     public static void main(String[] args) {
         Server server = new Server(8090);
+        server.setHandler(new HelloHandler());
 
         try {
             server.start();

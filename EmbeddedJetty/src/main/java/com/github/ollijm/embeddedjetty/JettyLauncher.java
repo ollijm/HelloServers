@@ -1,5 +1,9 @@
 package com.github.ollijm.embeddedjetty;
 
+import org.eclipse.jetty.server.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Created by IntelliJ IDEA.
  * User: olli
@@ -8,7 +12,16 @@ package com.github.ollijm.embeddedjetty;
  * To change this template use File | Settings | File Templates.
  */
 public class JettyLauncher {
-    public static void main(String[] args) {
+    private static Logger log = LoggerFactory.getLogger(JettyLauncher.class);
 
+    public static void main(String[] args) {
+        Server server = new Server(8090);
+
+        try {
+            server.start();
+            server.join();
+        } catch (Exception e) {
+            log.error("Something terrible happened...", e);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.github.ollijm.embeddedjetty;
 
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,15 +16,22 @@ import org.slf4j.LoggerFactory;
 public class JettyLauncher {
     private static Logger log = LoggerFactory.getLogger(JettyLauncher.class);
 
-    public static void main(String[] args) {
-        Server server = new Server(8090);
+    public static void main(String[] args) throws Exception {
+        new JettyLauncher().launch();
+    }
+
+    public void launch() throws Exception {
+        Server server = new Server();
+
+        // Use the recommended NIO connector
+        SelectChannelConnector connector = new SelectChannelConnector();
+        connector.setPort(8090);
+        connector.setMaxIdleTime(10000);
+
+        server.setConnectors(new Connector[]{connector});
         server.setHandler(new HelloHandler());
 
-        try {
-            server.start();
-            server.join();
-        } catch (Exception e) {
-            log.error("Something terrible happened...", e);
-        }
+        server.start();
+        server.join();
     }
 }

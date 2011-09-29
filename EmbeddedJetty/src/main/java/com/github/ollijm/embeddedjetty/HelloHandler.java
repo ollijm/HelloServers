@@ -11,11 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Created by IntelliJ IDEA.
- * User: olli
- * Date: 9/18/11
- * Time: 8:31 PM
- * To change this template use File | Settings | File Templates.
+ * Handle GET only if pleaseSay param is set
  */
 public class HelloHandler extends AbstractHandler {
 
@@ -25,9 +21,11 @@ public class HelloHandler extends AbstractHandler {
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-        baseRequest.setHandled(true);
-        response.getWriter().println("<h1>Embedded Jetty says Hullo!</h1>");
+        if (request.getParameter("pleaseSay") != null) {
+            response.setContentType("text/html;charset=utf-8");
+            response.setStatus(HttpServletResponse.SC_OK);
+            baseRequest.setHandled(true);
+            response.getWriter().println("<h1>Handler says " + request.getParameter("pleaseSay") + "!</h1>");
+        }
     }
 }
